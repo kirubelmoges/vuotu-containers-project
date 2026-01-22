@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: patient-ui
+  labels:
+    app: patient-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: patient-ui
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: patient-ui
+    spec:
+      containers:
+      - name: patient-ui
+        image: us.icr.io/sn-labs-primeforthek/patient-ui:v2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        resources:
+          limits:
+            cpu: 5m
+          requests:
+            cpu: 2m
